@@ -1,0 +1,89 @@
+<app-loading [condition]="isLoading"></app-loading>
+
+<app-toast [message]="toast.message"></app-toast>
+
+<div class="card mb-3" *ngIf="!isLoading">
+  <h4 class="card-header">Current bundles ({{bundles.length}})</h4>
+  <div class="card-body">
+    <table class="table table-bordered">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">Bundle</th>
+          <th scope="col">img</th>
+          <th scope="col">Value</th>
+          <th scope="col">Date</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="bundles.length === 0">
+        <tr>
+          <td colspan="4">There are no bundles in the DB. Add a new bundle below.</td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="!isEditing">
+        <tr *ngFor="let bundle of bundles">
+          <td>{{bundle.bundleTitle}}</td>
+          <td>{{bundle.img}}</td>
+          <td>{{bundle.value}}</td>
+          <td>{{bundle.date | date:'dd/MM/yyyy'}}</td>
+          <td>
+            <button class="btn btn-sm btn-primary" (click)="enableEditing(bundle)">
+              <i class="fa fa-pencil"></i> <!-- Edit -->
+            </button>
+            <button class="btn btn-sm btn-danger ml-1" (click)="deleteBundle(bundle)">
+              <i class="fa fa-trash"></i> <!-- Delete -->
+            </button>
+          </td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="isEditing">
+        <tr>
+          <td colspan="4">
+            <form class="form-inline" #form="ngForm" (ngSubmit)="editBundle(bundle)">
+              <input class="form-control mr-2" type="text" name="name"
+                     [(ngModel)]="bundle.name" placeholder="Name" required>
+              <input class="form-control mr-2" type="text" name="bundleTitle"
+                     [(ngModel)]="bundle.bundleTitle" placeholder="BundleTitle" required>
+              <input class="form-control mr-2" type="text" name="img"
+                     [(ngModel)]="bundle.img" placeholder="Img" required>
+              <input class="form-control mr-2" type="checkbox" name="active"
+                     [(ngModel)]="bundle.active" placeholder="Active">
+              <input class="form-control mr-2" type="number" name="value"
+                     [(ngModel)]="bundle.value" placeholder="Value" step="any" min="0" required>
+              <input class="form-control mr-2" type="date" name="date"
+                     [(ngModel)]="bundle.date" placeholder="Date" step="any" min="0" required>
+              <button class="btn btn-sm btn-primary mr-2" type="submit" [disabled]="!form.form.valid">
+                <i class="fa fa-floppy-o"></i> Save
+              </button>
+              <button class="btn btn-sm btn-warning" (click)="cancelEditing()">
+                <i class="fa fa-times"></i> Cancel
+              </button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card" *ngIf="!isEditing">
+  <h4 class="card-header">Add new bundle</h4>
+  <div class="card-body">
+    <form class="form-inline" [formGroup]="addBundleForm" (ngSubmit)="addBundle()">
+      <input class="form-control mr-2" type="text" name="name"
+             formControlName="name" placeholder="Name">
+      <input class="form-control mr-2" type="text" name="bundleTitle"
+             formControlName="bundleTitle" placeholder="Bundle">
+      <input class="form-control mr-2" type="text" name="img"
+             formControlName="img" placeholder="Img">
+      <input class="form-control mr-2" type="checkbox" name="active"
+             formControlName="active" placeholder="Active">
+      <input class="form-control mr-2" type="number" name="value"
+             formControlName="value" placeholder="Value" step="any" min="0">
+      <input class="form-control mr-2" type="date" name="date"
+             formControlName="date" placeholder="Date">
+      <button class="btn btn-primary" type="submit" [disabled]="!addBundleForm.valid">
+        <i class="fa fa-plus"></i> Add
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import 'rxjs/add/operator/mergeMap';
 
 import { UserService } from '../services/user.service';
+import { WalletService } from '../services/wallet.service';
+
+import { Wallet } from '../shared/models/wallet.model';
+
 import { ToastComponent } from '../shared/toast/toast.component';
 
 @Component({
@@ -31,17 +36,21 @@ export class RegisterComponent implements OnInit {
     Validators.required
   ]);
 
+  wallet: Wallet;
+
   constructor(private formBuilder: FormBuilder,
               private router: Router,
               public toast: ToastComponent,
-              private userService: UserService) { }
+              private userService: UserService,
+              private walletService: WalletService) { }
 
   ngOnInit() {
     this.registerForm = this.formBuilder.group({
       username: this.username,
       email: this.email,
       password: this.password,
-      role: this.role
+      role: this.role,
+      active: true
     });
   }
 
@@ -58,12 +67,24 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    this.userService.register(this.registerForm.value).subscribe(
-      res => {
-        this.toast.setMessage('you successfully registered!', 'success');
-        this.router.navigate(['/login']);
+    this.userService.register(this.registerForm.value)
+      .flatMap(user => this.walletService.addWallet(this.createUserWallet(user._id)))
+      .subscribe(
+        response => {
+          this.wallet = response;
+          this.toast.setMessage('you successfully registered!', 'success');
+          this.router.navigate(['/login']);
       },
-      error => this.toast.setMessage('email already exists', 'danger')
-    );
+        error => this.toast.setMessage('email already exists', 'danger')
+      );
   }
+
+  createUserWallet(id_user: string) {
+    let wallet: Wallet;
+    wallet = new Wallet();
+    wallet.coins = 100;
+    wallet.id_user = id_user;
+    return wallet;
+  }
+
 }

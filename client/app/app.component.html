@@ -14,8 +14,13 @@
           </a>
         </li>
         <li class="nav-item">
-          <a routerLink="/cats" class="nav-link" routerLinkActive="active">
-            <i class="fa fa-list"></i> Cats
+          <a routerLink="/spintest" class="nav-link" routerLinkActive="active">
+            <i class="fa fa-gamepad"></i> SpinTest
+          </a>
+        </li>
+        <li class="nav-item">
+          <a routerLink="/bundles" class="nav-link" routerLinkActive="active">
+            <i class="fa fa-cube"></i> Bundles
           </a>
         </li>
         <li class="nav-item">
@@ -42,6 +47,11 @@
           <a routerLink="/logout" class="nav-link" routerLinkActive="active" *ngIf="auth.loggedIn">
             <i class="fa fa-sign-out"></i> Logout
           </a>
+        </li>
+        <li class="nav-item">
+          <div *ngIf="auth.loggedIn">
+            <i class="fa fa-money"></i> {{auth.walletUser.coins}} Coins
+          </div>
         </li>
       </ul>
     </div>

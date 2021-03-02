@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ToastComponent } from '../shared/toast/toast.component';
-import { AuthService } from '../services/auth.service';
-import { UserService } from '../services/user.service';
-import { User } from '../shared/models/user.model';
+import { ToastComponent } from '../../shared/toast/toast.component';
+import { AuthService } from '../../services/auth.service';
+import { UserService } from '../../services/user.service';
+import { User } from '../../shared/models/user.model';
 
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html'
+  selector: 'app-users',
+  templateUrl: './users.component.html'
 })
-export class AdminComponent implements OnInit {
+export class UsersComponent implements OnInit {
 
   users: User[] = [];
   isLoading = true;

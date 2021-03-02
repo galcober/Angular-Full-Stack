@@ -4,7 +4,10 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 import { UserService } from './user.service';
+import { WalletService } from './wallet.service';
+
 import { User } from '../shared/models/user.model';
+import { Wallet } from '../shared/models/wallet.model';
 
 import 'rxjs/add/operator/map';
 
@@ -14,14 +17,17 @@ export class AuthService {
   isAdmin = false;
 
   currentUser: User = new User();
+  walletUser: Wallet = new Wallet();
 
   constructor(private userService: UserService,
+              private walletService: WalletService,
               private router: Router,
               private jwtHelper: JwtHelperService) {
     const token = localStorage.getItem('token');
     if (token) {
       const decodedUser = this.decodeUserFromToken(token);
       this.setCurrentUser(decodedUser);
+      this.setWalletUser(decodedUser);
     }
   }
 
@@ -31,6 +37,7 @@ export class AuthService {
         localStorage.setItem('token', res.token);
         const decodedUser = this.decodeUserFromToken(res.token);
         this.setCurrentUser(decodedUser);
+        this.setWalletUser(decodedUser);
         return this.loggedIn;
       }
     );
@@ -57,4 +64,10 @@ export class AuthService {
     delete decodedUser.role;
   }
 
+  setWalletUser(decodedUser) {
+    this.walletService.getWalletByUserId(this.currentUser._id).subscribe(
+      data => this.walletUser = data,
+      error => console.log(error)
+    );
+  }
 }

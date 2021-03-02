@@ -1,0 +1,37 @@
+<div class="jumbotron text-center">
+  <div class="row ">
+          <div class="col-md-3 text-center">
+              <h2 class="cred-lbl">COINS</h2>
+              <h1 class="credits">{{walletUser.coins}}</h1>
+          </div>
+          <div class="col-md-6 text-center">
+              <h1 class="main-heading">CASINO ROYALE</h1>
+          </div>
+          <div class="col-md-3 text-center">
+              <h2 class="bet-cred-lbl">BET CREDITS</h2>
+              <h1 class="bet-credits">{{betCoins}}</h1>
+          </div>
+  </div>
+
+  <div class="row justify-content-md-center reel">
+      <div class="col-md-2 image-one" id="reelImg"><img (click)="stopSpinning()" [src]="currentSym1.symbolLink"></div>
+      <div class="col-md-2 image-two" id="reelImg"><img (click)="stopSpinning()" [src]="currentSym2.symbolLink"></div>
+      <div class="col-md-2 image-three" id="reelImg" style="border: 5px solid;"><img (click)="stopSpinning()" [src]="currentSym3.symbolLink"></div>
+      <div class="col-md-2 image-four" id="reelImg"><img (click)="stopSpinning()" [src]="currentSym4.symbolLink"></div>
+      <div class="col-md-2 image-five" id="reelImg"><img (click)="stopSpinning()" [src]="currentSym5.symbolLink"></div>
+  </div>
+
+  <div class="row main-btns">
+      <div class="col-md-4 sub-btns">
+          <button type="button" class="btn btn-outline-info" (click)="betCoin()">BET CREDIT</button>
+          <button type="button" class="btn btn-outline-info" (click)="betMax()">BET MAX</button>
+      </div>
+      <div class="col-md-4">
+          <button type="button" class="btn btn-danger btn-lg btn-spin" (click)="spinning()">SPIN</button>
+      </div>
+      <div class="col-md-4 sub-btns">
+          <button type="button" class="btn btn-outline-info" (click)="addCoin()">ADD CREDIT</button>
+          <button type="button" class="btn btn-outline-info" (click)="reset()">RESET</button>
+      </div>
+  </div>
+  </div>

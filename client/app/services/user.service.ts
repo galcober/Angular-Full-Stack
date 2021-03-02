@@ -41,4 +41,8 @@ export class UserService {
     return this.http.delete(`/api/user/${user._id}`, { responseType: 'text' });
   }
 
+  deactivateUser(user: User): Observable<any> {
+    return this.http.put(`/api/user/deactivate/${user._id}`, user, { responseType: 'text' });
+  }
+
 }
